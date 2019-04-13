@@ -1,0 +1,67 @@
+body{
+    font-family: "Gill Sans MT";
+}
+.nav_bar{
+    float: left;
+    list-style: none;
+    vertical-align: center;
+    padding-left: 10%
+
+}
+.nav_bar ul{
+    padding-left: 300px;
+}
+.nav_bar li{
+    display:inline-block;
+
+}
+.nav_bar li a{
+    color: darkblue;
+    display: inline-block;
+    text-decoration: none;
+    padding: 5px 35px;
+    font-family: "Trebuchet MS";
+    font-size: 20px;
+    padding-top: 50px;
+
+
+}
+form{
+    padding-top: 1px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    background-color: lightgray;
+    font-family: "Gill Sans MT"
+}
+.details_form{
+    
+}
+.text{
+
+}
+.headers{
+
+}
+.sub_headers{
+
+}
+img.logo_center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom:40px;
+
+}
+img.logo_left {
+    display: inline-block;
+    height: 150px;
+    margin: 10px;
+    position: absolute;
+    float: left;
+    pading-left: 50px;
+}
+footer{
+    padding-top: 70px;
+    font-family: "Gill Sans MT";
+    text-align: center;
+}
