@@ -17,7 +17,7 @@ require 'templates/credentials/admin_only.php';
 </header>
 <body>
 <div class="grid-container">
-    <div class="grid-100">
+    <div class="grid-50">
         <div id="details" class="details_form" style="margin-top:100px">
             <form  action="PHP_Scripts/admin_add_user.php" method="post">
                 <h1>Add a new User</h1>
@@ -28,6 +28,25 @@ require 'templates/credentials/admin_only.php';
                 <p>User Type: <select name="user_type">
                         <option name="driver">driver</option>
                         <option name="manager">manager</option>
+                    </select></p>
+                <button type="submit">Create New User</button>
+            </form>
+        </div>
+    </div>
+    <div class="grid-50">
+        <div id="details" class="details_form" style="margin-top:100px">
+            <form  action="PHP_Scripts/admin_add_user.php" method="post">
+                <h1>Delete or Suspend a User Account</h1>
+                <p>Select a user account below and whether to suspend or delete it.</p>
+                <p>Email address: <select name="user_type">
+                        <?php
+                        require_once ('PHP_Scripts/db_connect.php');
+                        $sql = "SELECT email FROM users WHERE user_type != 'admin'";
+                        $result=mysqli_query($connection,$sql) or die(mysqli_error($connection));
+                        while($row =mysqli_fetch_array($result)){
+                            echo "<option value='{$row['email']}'></option>";
+                        }
+                        ?>
                     </select></p>
                 <button type="submit">Create New User</button>
             </form>

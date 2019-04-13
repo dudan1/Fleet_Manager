@@ -21,7 +21,7 @@ $result =mysqli_query($connection,$sql) or die(mysqli_error($connection));
     if($count > 0){
 
     while($row = mysqli_fetch_array($result)) {
-        if (password_verify($password, $row['password'])) {
+        if (password_verify($password, $row['password']) AND $row['is_suspended'] != 1) {
 
             $_SESSION['name'] = $email;
 
