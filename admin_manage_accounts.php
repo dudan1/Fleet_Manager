@@ -35,23 +35,42 @@ require 'templates/credentials/admin_only.php';
     </div>
     <div class="grid-50">
         <div id="details" class="details_form" style="margin-top:100px">
-            <form  action="PHP_Scripts/admin_add_user.php" method="post">
-                <h1>Delete or Suspend a User Account</h1>
-                <p>Select a user account below and whether to suspend or delete it.</p>
-                <p>Email address: <select name="user_type">
+            <form  action="PHP_Scripts/admin_delete_user.php" method="post">
+                <h1>Manage a User Account</h1>
+                <p>Select a user account below and whether to suspend, reactivate or delete it.</p>
+                <p>Email address: <select name="email">
                         <?php
                         require_once ('PHP_Scripts/db_connect.php');
                         $sql = "SELECT email FROM users WHERE user_type != 'admin'";
                         $result=mysqli_query($connection,$sql) or die(mysqli_error($connection));
                         while($row =mysqli_fetch_array($result)){
-                            echo "<option value='{$row['email']}'></option>";
+                            echo "<option value='{$row['email']}'>{$row['email']}</option>";
                         }
                         ?>
                     </select></p>
-                <button type="submit">Create New User</button>
+                <p><input type="radio" name="del_sus" value="delete">Delete
+                <input type="radio" name="del_sus" value="suspend">Suspend
+                <input type="radio" name="del_sus" value="reactivate">Reactivate</p>
+                <button type="submit">Confirm Action</button>
+            </form>
+            <form  action="PHP_Scripts/admin_edit_user.php" method="post">
+                <h1>Change a User Account Password</h1>
+                <p>Select a user account below and enter the new password.</p>
+                <p>Email Address: <select name="email">
+                        <?php
+                        require_once ('PHP_Scripts/db_connect.php');
+                        $sql = "SELECT email FROM drivers";
+                        $result=mysqli_query($connection,$sql) or die(mysqli_error($connection));
+                        while($row =mysqli_fetch_array($result)){
+                            echo "<option value='{$row['email']}'>{$row['email']}</option>";
+                        }
+                        ?>
+                    </select></p>
+                <p>New Password: <input type="password" name="password"></p>
+                <button type="submit">Confirm Password Change</button>
             </form>
         </div>
-    </div>
+ </div>
 </div>
 <footer>
     Duncan Orr 1809591 CMM007 <a href="about.html">About Fleet Manager</a>
