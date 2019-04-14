@@ -9,6 +9,7 @@ $first_name = $row['first_name'];
 $surname = $row['surname'];
 $vehicle_reg = $row['vehicle_reg'];
 $licence_number = $row['licence_number'];
+$licence_url = $row['licence_url'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,6 +52,7 @@ $licence_number = $row['licence_number'];
                     <p><input type="file" name="fileToUpload" id="fileToUpload">
                     <input type="hidden" name="filename" id="filename"></p>
                     <input type="hidden" name = "email2" value = "<?php echo "{$email}"; ?>">
+                <p>Current Licence: <a target ='_blank' href ='<?php echo "{$licence_url}"?>'><img src = '<?php echo "{$licence_url}"?>' alt="drivers licence" height = 150px></a></p>
                 <button type="submit">Update Driver's Licence</button>
             </form>
         </div>
