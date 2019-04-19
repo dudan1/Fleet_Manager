@@ -16,6 +16,9 @@ body{
     display:inline-block;
 
 }
+main{
+    padding-top:150px;
+}
 .nav_bar li a{
     color: darkblue;
     display: inline-block;
@@ -71,10 +74,35 @@ footer{
     margin-left: auto;
     margin-right: auto;
 }
-.log_form{
+.log_form_container{
+    display: block;
     text-align: center;
+}
+form.log_form{
     display: inline-block;
     margin-left: auto;
     margin-right: auto;
+    padding-right:20px;
 }
+.currencyinput {
+    border: 1px inset #ccc;
+}
+.currencyinput input {
+    border: 0;
+}
+table {
+    width: 40%;
+    border-collapse: collapse;
+}
+
+table, td, th {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+th {
+    text-align: left;
+}
+
+
 

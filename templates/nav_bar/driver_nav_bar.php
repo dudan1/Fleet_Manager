@@ -3,6 +3,7 @@
 
     <ul>
         <li><a href="driver_home.php">Home</a></li>
+        <li><a href="driver_logs.php">My Logs</a></li>
         <li><a href="driver_view_profile.php">My Profile</a></li>
         <li><a href="driver_view_vehicle.php">My Vehicle</a></li>
         <li><a href="driver_help.html">Contact Us</a></li>
