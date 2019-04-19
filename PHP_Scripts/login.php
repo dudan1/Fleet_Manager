@@ -35,7 +35,7 @@ $result =mysqli_query($connection,$sql) or die(mysqli_error($connection));
             }
               elseif ($row['user_type'] == 'manager') {
                 $_SESSION['user_type'] = $row['user_type'];
-                header('Location:../manager.php');
+                header('Location:../manager_home.php');
             }
             else{
                 echo "invalid user_type error";

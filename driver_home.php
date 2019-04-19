@@ -35,6 +35,27 @@ $_SESSION['driver_ID'] = $row['driver_ID'];
                     <button type="submit">Post Daily Log</button>
                 </form>
             </div>
+            <div class="notifications">
+                <h3>Notifications</h3>
+                <?php
+                $sql = "SELECT * FROM vehicles WHERE driver_ID = '$_SESSION[driver_ID]'";
+                $result = mysqli_query($connection, $sql);
+                $num_rows= mysqli_num_rows($result);
+                while($row = mysqli_fetch_array($result)) {
+                    $next_mot = $row['date_next_MOT'];
+                    $tax = $row['car_tax_due_date'];
+                    $insurance = $row['insurance_renewal_date'];
+                    $car = $row['vehicle_reg'];
+                    $date = date("Y/m/d");
+                    echo "Today's Date " . $date."<br>";
+                    echo "Vehicle Registration " . $car."<br>";
+                    echo "Car Tax Due Date: " . $tax."<br>";
+                    echo "Next MOT Date: " . $next_mot."<br>";
+                    echo "Insurance Renewal Date: " . $insurance."<br>";
+                }
+                ?>
+
+            </div>
         </div>
     </div>
 </main>
