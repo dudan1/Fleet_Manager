@@ -1,9 +1,9 @@
 <?php
 session_start();
-$period=$_GET['period'];
-$id=$_GET['id'];
-//if($period == "all_days") {
-    require 'db_connect.php';
+require 'db_connect.php';
+mysqli_real_escape_string($connection,$_GET['period']);
+$id=mysqli_real_escape_string($connection,$_GET['id']);
+
     $sql = "SELECT log_date, daily_takings, daily_mileage, no_journeys, fuel_cost  
  FROM logs WHERE driver_ID = $id AND TIMESTAMP(log_date) < now()";
     $result = mysqli_query($connection, $sql);

@@ -10,6 +10,7 @@ $surname = $row['surname'];
 $vehicle_reg = $row['vehicle_reg'];
 $licence_number = $row['licence_number'];
 $licence_url = $row['licence_url'];
+$licence_points = $row['licence_points'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,6 +46,7 @@ $licence_url = $row['licence_url'];
                 <p>Surname: <input type="text" name="surname" maxlength="20" value = "<?php echo "{$surname}"?>"></p>
                 <p>Vehicle Registration Number:<input type="text" name="registration" maxlength="7" value = "<?php echo "{$vehicle_reg}"?>"></p>
                 <p>Licence Number: <input type="text" name="licence" maxlength="16" value = "<?php echo "{$licence_number}"?>"></p>
+                <p>Licence Points: <input type="text" name="points" maxlength="2" value = "<?php echo "{$licence_points}"?>"></p>
                 <button type="submit">Update Driver Details</button>
             </form>
             <form action="PHP_Scripts/admin_edit_driver_licence.php" method="post" enctype="multipart/form-data">
@@ -59,7 +61,7 @@ $licence_url = $row['licence_url'];
     </div>
 </div>
 <footer>
-    Duncan Orr 1809591 CMM007 <a href="about.html">About Fleet Manager</a>
+    Duncan Orr 1809591 CMM007 <a href="about.php">About Fleet Manager</a>
 </footer>
 </body>
 </html>

@@ -5,14 +5,15 @@ require 'db_connect.php';
 if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
-$stmt = $connection->prepare("UPDATE drivers SET first_name = ?, surname = ?, vehicle_reg = ?, licence_number = ? WHERE email = ?");
-$stmt->bind_param("sssss", $first_name, $surname, $vehicle_reg, $licence_number, $email);
+$stmt = $connection->prepare("UPDATE drivers SET first_name = ?, surname = ?, vehicle_reg = ?, licence_number = ?, licence_points = ? WHERE email = ?");
+$stmt->bind_param("sssssi", $first_name, $surname, $vehicle_reg, $licence_number,$licence_points, $email);
 
 $email = $_POST['email'];
 $first_name = mysqli_real_escape_string($connection, $_POST['first_name']);
 $surname = mysqli_real_escape_string($connection, $_POST['surname']);
 $vehicle_reg = mysqli_real_escape_string($connection, $_POST['registration']);
 $licence_number = mysqli_real_escape_string($connection, $_POST['licence']);
+$licence_points = mysqli_real_escape_string($connection, $_POST['points']);
 
 $stmt->execute();
 

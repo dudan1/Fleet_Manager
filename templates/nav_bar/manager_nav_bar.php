@@ -3,7 +3,9 @@
     <ul>
         <li><a href="manager_home.php">Home</a></li>
         <li><form class = "search_button" action ="manager_search.php" method="get"><input type="hidden" name="period" value = ""><input type="hidden" name="driver" value = "">
-                <button class="nav_button" type="submit" value="Search">Search</button></form></li>
+                <button class="nav_button" type="submit" value="Search">Search Logs</button></form></li>
+        <li><a href="manager_drivers.php">Search Drivers</a></li>
+        <li><a href="manager_vehicles.php">Search Vehicles</a></li>
         <li><a href="PHP_Scripts/logout.php">Log Out</a></li>
     </ul>
 </div>

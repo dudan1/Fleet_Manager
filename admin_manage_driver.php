@@ -46,6 +46,7 @@ require 'templates/credentials/admin_only.php';
                 <p>Surname: <input type="text" name="surname" maxlength="20"></p>
                 <p>Vehicle Registration Number:<input type="text" name="registration" maxlength="7"></p>
                 <p>Licence Number: <input type="text" name="licence" maxlength="16"></p>
+                <p>Licence Points: <input type="text" name="points" maxlength="2"></p>
                 <p>Scan of License to upload:
                 <input type="file" name="fileToUpload" id="fileToUpload" required>
                     <input type="hidden" name="filename" id="filename"></p>
@@ -76,7 +77,7 @@ require 'templates/credentials/admin_only.php';
                 <p>Email address: <select name="email">
                         <?php
                         require_once ('PHP_Scripts/db_connect.php');
-                        $sql = "SELECT email FROM users WHERE user_type = 'driver'";
+                        $sql = "SELECT email FROM drivers";
                         $result=mysqli_query($connection,$sql) or die(mysqli_error($connection));
                         while($row =mysqli_fetch_array($result)){
                             echo "<option value='{$row['email']}'>{$row['email']}</option>";
@@ -90,7 +91,7 @@ require 'templates/credentials/admin_only.php';
 </div>
 </main>
 <footer>
-    Duncan Orr 1809591 CMM007 <a href="about.html">About Fleet Manager</a>
+    Duncan Orr 1809591 CMM007 <a href="about.php">About Fleet Manager</a>
 </footer>
 </body>
 </html>

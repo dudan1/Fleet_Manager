@@ -1,6 +1,7 @@
 <?php
 session_start();
-$period=$_GET['period'];
+require 'db_connect.php';
+$period= mysqli_real_escape_string($connection,$_GET['period']);
 if($period == "all_days") {
     require 'db_connect.php';
     $sql = "SELECT log_date, daily_takings, daily_mileage, no_journeys, fuel_cost  

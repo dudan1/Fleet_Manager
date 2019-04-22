@@ -70,8 +70,9 @@ while($row =mysqli_fetch_array($result)){
     </div>
     <div id="logTable"></div>
     <?php
-    $period=$_GET['period'];
-    $id=$_GET['driver'];
+    require 'PHP_Scripts/db_connect.php';
+    $period=mysqli_real_escape_string($connection, $_GET['period']);
+    $id=mysqli_real_escape_string($connection, $_GET['driver']);
     if(is_numeric($id)) {
         if ($period == "all_days") {
 
@@ -736,7 +737,7 @@ ROUND(AVG(l.fuel_cost),2),ROUND(SUM(l.daily_takings),2), ROUND(SUM(l.daily_milea
     </div>
 </main>
 <footer>
-    Duncan Orr 1809591 CMM007 <a href="about.html">About Fleet Manager</a>
+    Duncan Orr 1809591 CMM007 <a href="about.php">About Fleet Manager</a>
 </footer>
 </body>
 </html>

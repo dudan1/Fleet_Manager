@@ -49,7 +49,7 @@ require 'templates/credentials/driver_creds.php';
 </div></div>
 </main>
 <footer>
-    Duncan Orr 1809591 CMM007 <a href="about.html">About Fleet Manager</a>
+    Duncan Orr 1809591 CMM007 <a href="about.php">About Fleet Manager</a>
 </footer>
 </body>
 </html>

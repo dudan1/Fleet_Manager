@@ -7,8 +7,8 @@ if ($connection->connect_error) {
 }
 
 // prepare and bind
-   if($stmt = $connection->prepare("INSERT INTO drivers (email, first_name, surname, vehicle_reg, licence_number, licence_url) VALUES (?, ?, ?, ?, ?, ?)")){
-        if($stmt->bind_param("ssssss", $email, $first_name, $surname, $vehicle_reg, $licence_number, $url)){
+   if($stmt = $connection->prepare("INSERT INTO drivers (email, first_name, surname, vehicle_reg, licence_number, licence_url, licence_points) VALUES (?, ?, ?, ?, ?, ?, ?)")){
+        if($stmt->bind_param("ssssssi", $email, $first_name, $surname, $vehicle_reg, $licence_number, $url, $licence_points)){
 // set parameters and execute
 
         $email = $_POST['email'];
@@ -24,6 +24,7 @@ if ($connection->connect_error) {
         $link = "uploads/".$email."/".$_POST['filename'];
         $url = mysqli_real_escape_string($connection, $link);
         echo "$url<br>";
+        $licence_points = mysqli_real_escape_string($connection, $_POST['points']);
 
 
             if($stmt->execute()){
