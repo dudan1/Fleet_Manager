@@ -77,9 +77,9 @@ while($row =mysqli_fetch_array($result)){
 
             require 'PHP_Scripts/db_connect.php';
             $sql = "SELECT l.log_date, l.daily_takings, l.daily_mileage, l.no_journeys, l.fuel_cost, d.first_name, d.surname 
-    FROM logs l, drivers d WHERE l.driver_ID = '$id' AND TIMESTAMP(log_date) < now() AND d.driver_ID = l.driver_ID";
+    FROM logs l, drivers d WHERE l.driver_ID = '$id' AND TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID";
             $result = mysqli_query($connection, $sql);
-//d.driver_ID = '$id' AND
+
             $num_rows = mysqli_num_rows($result);
             echo "
     <h3>Full Logs</h3><table>
@@ -111,7 +111,625 @@ while($row =mysqli_fetch_array($result)){
                 echo "</tr>";
             }
             echo "</table>";
+
+            $sql = "SELECT  ROUND(AVG(l.daily_takings),2), ROUND(AVG(l.daily_mileage),2), ROUND(AVG(l.no_journeys),0), ROUND(AVG(l.fuel_cost),2),
+ ROUND(SUM(l.daily_takings),2), ROUND(SUM(l.daily_mileage),2), ROUND(SUM(l.no_journeys),0), ROUND(SUM(l.fuel_cost),2), d.first_name, d.surname
+ FROM logs l, drivers d WHERE l.driver_ID = '$id' AND TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID";
+            $result = mysqli_query($connection, $sql);
+            $num_rows= mysqli_num_rows($result);
+
+            echo "<h3>Averages</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            $row = mysqli_fetch_array($result);
+
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(AVG(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(AVG(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+
+            echo "<h3>Totals</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(SUM(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(SUM(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
         }
+        elseif ($period == "7_days"){
+            require 'PHP_Scripts/db_connect.php';
+            $sql = "SELECT l.log_date, l.daily_takings, l.daily_mileage, l.no_journeys, l.fuel_cost, d.first_name, d.surname 
+    FROM logs l, drivers d WHERE l.driver_ID = '$id' AND TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID 
+    AND TIMESTAMP(l.log_date) > (now()+ INTERVAL -7 DAY)";
+            $result = mysqli_query($connection, $sql);
+
+            $num_rows = mysqli_num_rows($result);
+            echo "
+    <h3>Full Logs</h3><table>
+        <tr>
+            <th>Driver Name</th>
+            <th>Log Date</th>
+            <th>Takings</th>
+            <th>Mileage</th>
+            <th>Number of Journeys</th>
+            <th>Fuel Cost</th>
+        </tr>";
+
+
+            while ($row = $result->fetch_assoc()) {
+
+                $field0name = $row['first_name'] . " " . $row['surname'];
+                $field1name = $row["log_date"];
+                $field2name = $row["daily_takings"];
+                $field3name = $row["daily_mileage"];
+                $field4name = $row["no_journeys"];
+                $field5name = $row["fuel_cost"];
+                echo "<tr>";
+                echo "<td>" . $field0name . "</td>";
+                echo "<td>" . $field1name . "</td>";
+                echo "<td>£" . $field2name . "</td>";
+                echo "<td>" . $field3name . "</td>";
+                echo "<td>" . $field4name . "</td>";
+                echo "<td>£" . $field5name . "</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+
+            $sql = "SELECT  ROUND(AVG(l.daily_takings),2), ROUND(AVG(l.daily_mileage),2), ROUND(AVG(l.no_journeys),0), 
+ROUND(AVG(l.fuel_cost),2),ROUND(SUM(l.daily_takings),2), ROUND(SUM(l.daily_mileage),2), ROUND(SUM(l.no_journeys),0),
+ ROUND(SUM(l.fuel_cost),2), d.first_name, d.surname FROM logs l, drivers d WHERE l.driver_ID = '$id' AND 
+ TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID AND TIMESTAMP(log_date) > (now()+ INTERVAL -7 DAY)";
+            $result = mysqli_query($connection, $sql);
+            $num_rows= mysqli_num_rows($result);
+
+            echo "<h3>Averages</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            $row = mysqli_fetch_array($result);
+
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(AVG(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(AVG(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+
+            echo "<h3>Totals</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(SUM(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(SUM(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+        }
+        elseif($period =="30_days"){
+            require 'PHP_Scripts/db_connect.php';
+            $sql = "SELECT l.log_date, l.daily_takings, l.daily_mileage, l.no_journeys, l.fuel_cost, d.first_name, d.surname 
+    FROM logs l, drivers d WHERE l.driver_ID = '$id' AND TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID 
+    AND TIMESTAMP(l.log_date) > (now()+ INTERVAL -30 DAY)";
+            $result = mysqli_query($connection, $sql);
+
+            $num_rows = mysqli_num_rows($result);
+            echo "
+    <h3>Full Logs</h3><table>
+        <tr>
+            <th>Driver Name</th>
+            <th>Log Date</th>
+            <th>Takings</th>
+            <th>Mileage</th>
+            <th>Number of Journeys</th>
+            <th>Fuel Cost</th>
+        </tr>";
+
+
+            while ($row = $result->fetch_assoc()) {
+
+                $field0name = $row['first_name'] . " " . $row['surname'];
+                $field1name = $row["log_date"];
+                $field2name = $row["daily_takings"];
+                $field3name = $row["daily_mileage"];
+                $field4name = $row["no_journeys"];
+                $field5name = $row["fuel_cost"];
+                echo "<tr>";
+                echo "<td>" . $field0name . "</td>";
+                echo "<td>" . $field1name . "</td>";
+                echo "<td>£" . $field2name . "</td>";
+                echo "<td>" . $field3name . "</td>";
+                echo "<td>" . $field4name . "</td>";
+                echo "<td>£" . $field5name . "</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+
+            $sql = "SELECT  ROUND(AVG(l.daily_takings),2), ROUND(AVG(l.daily_mileage),2), ROUND(AVG(l.no_journeys),0), 
+ROUND(AVG(l.fuel_cost),2),ROUND(SUM(l.daily_takings),2), ROUND(SUM(l.daily_mileage),2), ROUND(SUM(l.no_journeys),0),
+ ROUND(SUM(l.fuel_cost),2), d.first_name, d.surname FROM logs l, drivers d WHERE l.driver_ID = '$id' AND 
+ TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID AND TIMESTAMP(l.log_date) > (now()+ INTERVAL -30 DAY)";
+            $result = mysqli_query($connection, $sql);
+            $num_rows= mysqli_num_rows($result);
+
+            echo "<h3>Averages</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            $row = mysqli_fetch_array($result);
+
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(AVG(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(AVG(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+
+            echo "<h3>Totals</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(SUM(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(SUM(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+        }
+        elseif ($period=="365_days"){
+            require 'PHP_Scripts/db_connect.php';
+            $sql = "SELECT l.log_date, l.daily_takings, l.daily_mileage, l.no_journeys, l.fuel_cost, d.first_name, d.surname 
+    FROM logs l, drivers d WHERE l.driver_ID = '$id' AND TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID 
+    AND TIMESTAMP(l.log_date) > (now()+ INTERVAL -365 DAY)";
+            $result = mysqli_query($connection, $sql);
+
+            $num_rows = mysqli_num_rows($result);
+            echo "
+    <h3>Full Logs</h3><table>
+        <tr>
+            <th>Driver Name</th>
+            <th>Log Date</th>
+            <th>Takings</th>
+            <th>Mileage</th>
+            <th>Number of Journeys</th>
+            <th>Fuel Cost</th>
+        </tr>";
+
+
+            while ($row = $result->fetch_assoc()) {
+
+                $field0name = $row['first_name'] . " " . $row['surname'];
+                $field1name = $row["log_date"];
+                $field2name = $row["daily_takings"];
+                $field3name = $row["daily_mileage"];
+                $field4name = $row["no_journeys"];
+                $field5name = $row["fuel_cost"];
+                echo "<tr>";
+                echo "<td>" . $field0name . "</td>";
+                echo "<td>" . $field1name . "</td>";
+                echo "<td>£" . $field2name . "</td>";
+                echo "<td>" . $field3name . "</td>";
+                echo "<td>" . $field4name . "</td>";
+                echo "<td>£" . $field5name . "</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+
+            $sql = "SELECT  ROUND(AVG(l.daily_takings),2), ROUND(AVG(l.daily_mileage),2), ROUND(AVG(l.no_journeys),0), 
+ROUND(AVG(l.fuel_cost),2),ROUND(SUM(l.daily_takings),2), ROUND(SUM(l.daily_mileage),2), ROUND(SUM(l.no_journeys),0),
+ ROUND(SUM(l.fuel_cost),2), d.first_name, d.surname FROM logs l, drivers d WHERE l.driver_ID = '$id' AND 
+ TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID AND TIMESTAMP(l.log_date) > (now()+ INTERVAL -365 DAY)";
+            $result = mysqli_query($connection, $sql);
+            $num_rows= mysqli_num_rows($result);
+
+            echo "<h3>Averages</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            $row = mysqli_fetch_array($result);
+
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(AVG(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(AVG(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+
+            echo "<h3>Totals</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(SUM(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(SUM(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+        }
+    }
+    else{
+        if ($period == "all_days") {
+
+            require 'PHP_Scripts/db_connect.php';
+            $sql = "SELECT l.log_date, l.daily_takings, l.daily_mileage, l.no_journeys, l.fuel_cost, d.first_name, d.surname 
+    FROM logs l, drivers d WHERE TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID";
+            $result = mysqli_query($connection, $sql);
+
+            $num_rows = mysqli_num_rows($result);
+            echo "
+    <h3>Full Logs</h3><table>
+        <tr>
+            <th>Driver Name</th>
+            <th>Log Date</th>
+            <th>Takings</th>
+            <th>Mileage</th>
+            <th>Number of Journeys</th>
+            <th>Fuel Cost</th>
+        </tr>";
+
+
+            while ($row = $result->fetch_assoc()) {
+
+                $field0name = $row['first_name'] . " " . $row['surname'];
+                $field1name = $row["log_date"];
+                $field2name = $row["daily_takings"];
+                $field3name = $row["daily_mileage"];
+                $field4name = $row["no_journeys"];
+                $field5name = $row["fuel_cost"];
+                echo "<tr>";
+                echo "<td>" . $field0name . "</td>";
+                echo "<td>" . $field1name . "</td>";
+                echo "<td>£" . $field2name . "</td>";
+                echo "<td>" . $field3name . "</td>";
+                echo "<td>" . $field4name . "</td>";
+                echo "<td>£" . $field5name . "</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+
+            $sql = "SELECT  ROUND(AVG(l.daily_takings),2), ROUND(AVG(l.daily_mileage),2), ROUND(AVG(l.no_journeys),0), ROUND(AVG(l.fuel_cost),2),
+ ROUND(SUM(l.daily_takings),2), ROUND(SUM(l.daily_mileage),2), ROUND(SUM(l.no_journeys),0), ROUND(SUM(l.fuel_cost),2), d.first_name, d.surname
+ FROM logs l, drivers d WHERE TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID";
+            $result = mysqli_query($connection, $sql);
+            $num_rows= mysqli_num_rows($result);
+
+            echo "<h3>Averages</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            $row = mysqli_fetch_array($result);
+
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(AVG(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(AVG(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+
+            echo "<h3>Totals</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(SUM(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(SUM(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+        }
+        elseif ($period == "7_days"){
+            require 'PHP_Scripts/db_connect.php';
+            $sql = "SELECT l.log_date, l.daily_takings, l.daily_mileage, l.no_journeys, l.fuel_cost, d.first_name, d.surname 
+    FROM logs l, drivers d WHERE TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID 
+    AND TIMESTAMP(l.log_date) > (now()+ INTERVAL -7 DAY)";
+            $result = mysqli_query($connection, $sql);
+
+            $num_rows = mysqli_num_rows($result);
+            echo "
+    <h3>Full Logs</h3><table>
+        <tr>
+            <th>Driver Name</th>
+            <th>Log Date</th>
+            <th>Takings</th>
+            <th>Mileage</th>
+            <th>Number of Journeys</th>
+            <th>Fuel Cost</th>
+        </tr>";
+
+
+            while ($row = $result->fetch_assoc()) {
+
+                $field0name = $row['first_name'] . " " . $row['surname'];
+                $field1name = $row["log_date"];
+                $field2name = $row["daily_takings"];
+                $field3name = $row["daily_mileage"];
+                $field4name = $row["no_journeys"];
+                $field5name = $row["fuel_cost"];
+                echo "<tr>";
+                echo "<td>" . $field0name . "</td>";
+                echo "<td>" . $field1name . "</td>";
+                echo "<td>£" . $field2name . "</td>";
+                echo "<td>" . $field3name . "</td>";
+                echo "<td>" . $field4name . "</td>";
+                echo "<td>£" . $field5name . "</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+
+            $sql = "SELECT  ROUND(AVG(l.daily_takings),2), ROUND(AVG(l.daily_mileage),2), ROUND(AVG(l.no_journeys),0), 
+ROUND(AVG(l.fuel_cost),2),ROUND(SUM(l.daily_takings),2), ROUND(SUM(l.daily_mileage),2), ROUND(SUM(l.no_journeys),0),
+ ROUND(SUM(l.fuel_cost),2), d.first_name, d.surname FROM logs l, drivers d WHERE
+ TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID AND TIMESTAMP(log_date) > (now()+ INTERVAL -7 DAY)";
+            $result = mysqli_query($connection, $sql);
+            $num_rows= mysqli_num_rows($result);
+
+            echo "<h3>Averages</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            $row = mysqli_fetch_array($result);
+
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(AVG(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(AVG(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+
+            echo "<h3>Totals</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(SUM(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(SUM(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+        }
+        elseif($period =="30_days"){
+            require 'PHP_Scripts/db_connect.php';
+            $sql = "SELECT l.log_date, l.daily_takings, l.daily_mileage, l.no_journeys, l.fuel_cost, d.first_name, d.surname 
+    FROM logs l, drivers d WHERE TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID 
+    AND TIMESTAMP(l.log_date) > (now()+ INTERVAL -30 DAY)";
+            $result = mysqli_query($connection, $sql);
+
+            $num_rows = mysqli_num_rows($result);
+            echo "
+    <h3>Full Logs</h3><table>
+        <tr>
+            <th>Driver Name</th>
+            <th>Log Date</th>
+            <th>Takings</th>
+            <th>Mileage</th>
+            <th>Number of Journeys</th>
+            <th>Fuel Cost</th>
+        </tr>";
+
+
+            while ($row = $result->fetch_assoc()) {
+
+                $field0name = $row['first_name'] . " " . $row['surname'];
+                $field1name = $row["log_date"];
+                $field2name = $row["daily_takings"];
+                $field3name = $row["daily_mileage"];
+                $field4name = $row["no_journeys"];
+                $field5name = $row["fuel_cost"];
+                echo "<tr>";
+                echo "<td>" . $field0name . "</td>";
+                echo "<td>" . $field1name . "</td>";
+                echo "<td>£" . $field2name . "</td>";
+                echo "<td>" . $field3name . "</td>";
+                echo "<td>" . $field4name . "</td>";
+                echo "<td>£" . $field5name . "</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+
+            $sql = "SELECT  ROUND(AVG(l.daily_takings),2), ROUND(AVG(l.daily_mileage),2), ROUND(AVG(l.no_journeys),0), 
+ROUND(AVG(l.fuel_cost),2),ROUND(SUM(l.daily_takings),2), ROUND(SUM(l.daily_mileage),2), ROUND(SUM(l.no_journeys),0),
+ ROUND(SUM(l.fuel_cost),2), d.first_name, d.surname FROM logs l, drivers d WHERE 
+ TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID AND TIMESTAMP(l.log_date) > (now()+ INTERVAL -30 DAY)";
+            $result = mysqli_query($connection, $sql);
+            $num_rows= mysqli_num_rows($result);
+
+            echo "<h3>Averages</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            $row = mysqli_fetch_array($result);
+
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(AVG(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(AVG(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+
+            echo "<h3>Totals</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(SUM(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(SUM(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+        }
+        elseif ($period=="365_days"){
+            require 'PHP_Scripts/db_connect.php';
+            $sql = "SELECT l.log_date, l.daily_takings, l.daily_mileage, l.no_journeys, l.fuel_cost, d.first_name, d.surname 
+    FROM logs l, drivers d WHERE TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID 
+    AND TIMESTAMP(l.log_date) > (now()+ INTERVAL -365 DAY)";
+            $result = mysqli_query($connection, $sql);
+
+            $num_rows = mysqli_num_rows($result);
+            echo "
+    <h3>Full Logs</h3><table>
+        <tr>
+            <th>Driver Name</th>
+            <th>Log Date</th>
+            <th>Takings</th>
+            <th>Mileage</th>
+            <th>Number of Journeys</th>
+            <th>Fuel Cost</th>
+        </tr>";
+
+
+            while ($row = $result->fetch_assoc()) {
+
+                $field0name = $row['first_name'] . " " . $row['surname'];
+                $field1name = $row["log_date"];
+                $field2name = $row["daily_takings"];
+                $field3name = $row["daily_mileage"];
+                $field4name = $row["no_journeys"];
+                $field5name = $row["fuel_cost"];
+                echo "<tr>";
+                echo "<td>" . $field0name . "</td>";
+                echo "<td>" . $field1name . "</td>";
+                echo "<td>£" . $field2name . "</td>";
+                echo "<td>" . $field3name . "</td>";
+                echo "<td>" . $field4name . "</td>";
+                echo "<td>£" . $field5name . "</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+
+            $sql = "SELECT  ROUND(AVG(l.daily_takings),2), ROUND(AVG(l.daily_mileage),2), ROUND(AVG(l.no_journeys),0), 
+ROUND(AVG(l.fuel_cost),2),ROUND(SUM(l.daily_takings),2), ROUND(SUM(l.daily_mileage),2), ROUND(SUM(l.no_journeys),0),
+ ROUND(SUM(l.fuel_cost),2), d.first_name, d.surname FROM logs l, drivers d WHERE 
+ TIMESTAMP(l.log_date) < now() AND d.driver_ID = l.driver_ID AND TIMESTAMP(l.log_date) > (now()+ INTERVAL -365 DAY)";
+            $result = mysqli_query($connection, $sql);
+            $num_rows= mysqli_num_rows($result);
+
+            echo "<h3>Averages</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            $row = mysqli_fetch_array($result);
+
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(AVG(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(AVG(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(AVG(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+
+            echo "<h3>Totals</h3>
+
+<table>
+<tr>
+<th>Takings</th>
+<th>Mileage</th>
+<th>Number of Journeys</th>
+<th>Fuel Cost</th>
+</tr>";
+            echo "<tr>";
+            echo "<td>£" . $row['ROUND(SUM(l.daily_takings),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.daily_mileage),2)'] . "</td>";
+            echo "<td>" . $row['ROUND(SUM(l.no_journeys),0)'] . "</td>";
+            echo "<td>£" . $row['ROUND(SUM(l.fuel_cost),2)'] . "</td>";
+            echo "</tr>";
+            echo "</table>";
+        }
+
     }
     ?>
         </div>
