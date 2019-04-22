@@ -17,7 +17,6 @@ if($stmt = $connection->prepare("UPDATE drivers SET first_name = ?, surname = ?,
     $licence_points = mysqli_real_escape_string($connection, $_POST['points']);
     if($stmt->execute()){
     echo "New records created successfully";
-
     $stmt->close();
     $connection->close();
     header("Location:../admin_manage_driver.php");
