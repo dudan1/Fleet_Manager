@@ -59,7 +59,7 @@ require 'templates/credentials/admin_only.php';
                 <p>Email Address: <select name="email">
                         <?php
                         require_once ('PHP_Scripts/db_connect.php');
-                        $sql = "SELECT email FROM drivers";
+                        $sql = "SELECT email FROM users";
                         $result=mysqli_query($connection,$sql) or die(mysqli_error($connection));
                         while($row =mysqli_fetch_array($result)){
                             echo "<option value='{$row['email']}'>{$row['email']}</option>";

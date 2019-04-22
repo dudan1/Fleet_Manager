@@ -64,10 +64,10 @@ require 'templates/credentials/admin_only.php';
                             }
                             ?>
                         </select></p>
-                    <button type="submit">Edit Manager</button>
+                    <button type="submit">Edit Vehicle</button>
                 </form>
                 <form  action="PHP_Scripts/admin_delete_vehicle.php" method="post">
-                    <h1>Clear VehicleDetails</h1>
+                    <h1>Clear Vehicle Details</h1>
                     <p>Select a Vehicle details to delete.</p>
                     <p>Vehicle Registration: <select name="vehicle_reg">
                             <?php
